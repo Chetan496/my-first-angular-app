@@ -26,19 +26,19 @@ Learn about RxJS operators like debounceTime, distinctUntilChanged, and switchMa
 Understand reactive programming patterns in Angular
 
 
-4. Testing Strategies
-Write comprehensive unit tests for your task service
-Create component tests with different testing approaches
-Implement E2E tests for critical user flows
-Learn about testing asynchronous operations
-
-
 5. Custom Structural Directives
 Create a directive for conditional rendering based on task properties
 Build a directive for repeating elements based on priority levels
 
 6. NgRx for State Management
+   Implement a shared state service using BehaviorSubject
+Try using the Mediator pattern for complex component interactions
 Implement NgRx for managing task state
 Learn about NgRx architecture and best practices
 Understand selectors, effects, and reducers
 
+4. Testing Strategies
+Write comprehensive unit tests for your task service
+Create component tests with different testing approaches
+Implement E2E tests for critical user flows
+Learn about testing asynchronous operations
