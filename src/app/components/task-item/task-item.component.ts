@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class TaskItemComponent  implements OnInit {
  
   @Input('task') task: Task  | undefined;
+
+  @Output() deleteTask = new EventEmitter<number>();
   
   constructor(private router: Router) {}
 
@@ -22,6 +24,13 @@ export class TaskItemComponent  implements OnInit {
   onEdit(): void {
     if (this.task) {
       this.router.navigate(['/edit-task', this.task.id]);
+    }
+  }
+
+  onDelete(): void {
+    if (this.task) {
+      console.log("deleting task with id", this.task.id);
+      this.deleteTask.emit(this.task.id);
     }
   }
 

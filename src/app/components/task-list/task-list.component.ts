@@ -26,6 +26,8 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-
-  
+  onDeleteTask(taskId: number): void {
+    this.taskService.deleteTask(taskId);
+    this.getTasks();
+  }
 }
