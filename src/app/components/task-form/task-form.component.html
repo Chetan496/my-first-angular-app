@@ -1,5 +1,5 @@
 <div class="task-form-container">
-  <h2>Add New Task</h2>
+  <h2>{{ isEditMode ? 'Edit Task' : 'Add New Task' }}</h2>
   
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
@@ -38,6 +38,13 @@
       }
     </div>
 
-    <button type="submit" [disabled]="taskForm.invalid">Add Task</button>
+    <div class="form-actions">
+      <button type="submit" [disabled]="taskForm.invalid">
+        {{ isEditMode ? 'Update Task' : 'Add Task' }}
+      </button>
+      @if (isEditMode) {
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+      }
+    </div>
   </form>
 </div>
