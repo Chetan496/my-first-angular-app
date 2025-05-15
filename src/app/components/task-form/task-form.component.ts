@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Task } from '../../models/task';
 import { CommonModule } from '@angular/common';
 import { TaskItemComponent } from '../task-item/task-item.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /*
 Using reactive forms we have to allow the user to add task details
@@ -21,31 +22,37 @@ We need to inject the TaskService to add the task to the list of tasks
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css'
 })
-export class TaskFormComponent implements OnInit, OnChanges{
+export class TaskFormComponent implements OnInit{
 
-  @Input() taskToEdit: Task | null = null;
+  taskBeingEdited: Task | undefined = undefined;
   isEditMode = false;
-  
+  taskId: number | null = null;  
   taskForm!: FormGroup; 
-
   priorities: ('low' | 'medium' | 'high')[] = ['low', 'medium', 'high'];
 
-  constructor(private formBuilder: FormBuilder,  private taskService: TaskService) {
-    
+  constructor(private formBuilder: FormBuilder,  private taskService: TaskService, private router: Router, private route: ActivatedRoute) {    
   }
 
   
   ngOnInit(): void {
     this.initForm();
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.taskId = +params['id']; // Convert to number
+        this.taskBeingEdited = this.taskService.getTaskById(this.taskId);
+        
+        if (this.taskBeingEdited) {
+          this.isEditMode = true;
+          this.populateForm(this.taskBeingEdited);
+        } else {
+          // Task not found, redirect to tasks list
+          this.router.navigate(['/tasks']);
+        }
+      }
+    });
+
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['taskToEdit'].currentValue) {
-      this.isEditMode = true;
-      this.populateForm(changes['taskToEdit'].currentValue);
-      
-    }
-  }
 
 
   initForm(): void {
@@ -70,9 +77,9 @@ export class TaskFormComponent implements OnInit, OnChanges{
   onSubmit(): void {
     if (this.taskForm.valid) {
 
-      if (this.isEditMode){
+      if (this.isEditMode && this.taskId ){
         const updatedTask: Task = {
-          ...this.taskToEdit!,
+          ...this.taskBeingEdited!,
           title: this.taskForm.value.title,
           description: this.taskForm.value.description,
           priority: this.taskForm.value.priority,
@@ -80,7 +87,7 @@ export class TaskFormComponent implements OnInit, OnChanges{
           updatedAt: new Date()
         };
         this.taskService.updateTask(updatedTask);
-        this.resetForm();
+        this.router.navigate(['/tasks']);
       } else {
       const dt: Date = new Date();
       const newTask: Task = {
@@ -94,7 +101,7 @@ export class TaskFormComponent implements OnInit, OnChanges{
       };
 
       this.taskService.addTask(newTask);
-      this.resetForm();
+      this.router.navigate(['/tasks']);
       }
     } else {
       Object.keys(this.taskForm.controls).forEach(key => {
@@ -104,19 +111,8 @@ export class TaskFormComponent implements OnInit, OnChanges{
   }
 
 
-  resetForm() {
-    this.taskForm.reset({
-      title: '',
-      description: '',
-      priority: 'medium',
-      completed: false
-    });
-    this.isEditMode = false;
-    this.taskToEdit = null;
-  }
-
   cancelEdit(): void {
-    this.resetForm();
+    this.router.navigate(['/tasks']);
   }
 
 }

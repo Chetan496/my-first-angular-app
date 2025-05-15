@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class TaskService {
 
+
   private tasks: Task[] = [];
 
   private tasksSubject = new BehaviorSubject<Task[]>([]);
@@ -65,4 +66,9 @@ export class TaskService {
     );
     this.tasksSubject.next(this.tasks);
   }
+
+  getTaskById(taskId: number) : Task | undefined {
+    return this.tasks.find(task => task.id === taskId);
+  }
+
 }

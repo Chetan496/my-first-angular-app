@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Task } from '../../models/task';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-item',
@@ -11,7 +12,8 @@ import { Task } from '../../models/task';
 export class TaskItemComponent  implements OnInit {
  
   @Input('task') task: Task  | undefined;
-  @Output() editTask = new EventEmitter<Task>();
+  
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     
@@ -19,7 +21,7 @@ export class TaskItemComponent  implements OnInit {
 
   onEdit(): void {
     if (this.task) {
-      this.editTask.emit(this.task);
+      this.router.navigate(['/edit-task', this.task.id]);
     }
   }
 

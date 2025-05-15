@@ -1,7 +1,3 @@
-<!-- @if (selectedTask){
-  <app-task-form [taskToEdit]="selectedTask"></app-task-form>
-} -->
-
 <div class="task-list">
 <h2>Tasks</h2>
 
@@ -11,7 +7,7 @@
 
 
 @for (task of tasks; track task.id){
-    <app-task-item [task]="task"  (editTask)="onEditTask($event)" >
+    <app-task-item [task]="task"  >
     </app-task-item>
 }
 
