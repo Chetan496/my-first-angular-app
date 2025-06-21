@@ -66,6 +66,11 @@
             }
           },
           "defaultConfiguration": "development"
+          "options": {
+            "port": 4200,
+            "host": "0.0.0.0",
+            "disableHostCheck": true,"
+          }"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
